@@ -13,7 +13,7 @@ class Document extends Model
 
     public function type()
     {
-        return $this->belongsTo(DocumentType::class, "document_type_id");
+        return $this->belongsTo(DocumentType::class, "type_id");
     }
 
     public function uploader()

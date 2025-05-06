@@ -44,9 +44,6 @@
                 },
             ], (item) => ({
                 name: item.name ?? '',
-                type: item.type?.name ?? '',
-                price: formatNumber(item.price) ?? '',
-                uploader: item.uploader?.name ?? '',
                 actions: `
                         <div class="text-center">
                             <a href="${editUrl}?id=${item.id}" title="Cập nhật"

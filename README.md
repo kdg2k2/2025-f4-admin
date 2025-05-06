@@ -7,3 +7,6 @@
 # 2. tải và cài ImageMagick PHP extension cho Windows
     - note: khi upload document sẽ dùng thư viện này đọc pdf thành ảnh
     - link: https://mlocati.github.io/articles/php-windows-imagick.html
+
+# 3. đặt lại APP_URL trong .env
+    - khi lên môi trường production cần gắn lại domain chuẩn cho APP_URL trong .env

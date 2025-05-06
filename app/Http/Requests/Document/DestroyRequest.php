@@ -22,9 +22,7 @@ class DestroyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'paginate' => 'required|in:0,1',
-            // 'per_page' => 'nullable|integer|min:1',
-            // 'page' => 'nullable|integer|min:1',
+            'id' => 'required|integer|exists:documents,id',
         ];
     }
 }

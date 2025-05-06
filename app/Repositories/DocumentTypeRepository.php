@@ -8,7 +8,7 @@ class DocumentTypeRepository
 {
     public function list(array $request)
     {
-        $query = DocumentType::orderByDesc("id");
+        $query = DocumentType::orderByDesc("id")->with('field');
         if (!empty($request['field_id']))
             $query->where('field_id', $request['field_id']);
         $records = $query->get()->toArray();

@@ -50,7 +50,7 @@ class DocumentTypeController extends Controller
 
     public function store(StoreRequest $request)
     {
-        return $this->catchWeb(function () use ($request) {
+        return $this->catchAPI(function () use ($request) {
             $data = $this->documentTypeService->store($request->validated());
             return response()->json(
                 [
@@ -76,7 +76,7 @@ class DocumentTypeController extends Controller
 
     public function update(UpdateRequest $request)
     {
-        return $this->catchWeb(function () use ($request) {
+        return $this->catchAPI(function () use ($request) {
             $data = $this->documentTypeService->update($request->validated());
             return response()->json(
                 [
@@ -90,7 +90,7 @@ class DocumentTypeController extends Controller
 
     public function destroy(DestroyRequest $request)
     {
-        return $this->catchWeb(function () use ($request) {
+        return $this->catchAPI(function () use ($request) {
             $data = $this->documentTypeService->destroy($request->validated());
             return response()->json(
                 [

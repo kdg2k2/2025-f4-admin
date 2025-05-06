@@ -42,26 +42,64 @@ class DocumentController extends Controller
 
     public function create()
     {
-        return $this->catchWeb(function () {});
+        return $this->catchAPI(function () {
+            $types = $this->documentTypeService->list(['paginate' => 0]);
+            return view('pages.document.create', [
+                'types' => $types,
+            ]);
+        });
     }
 
     public function store(StoreRequest $request)
     {
-        return $this->catchWeb(function () use ($request) {});
+        return $this->catchAPI(function () use ($request) {
+            $data = $this->documentService->store($request->validated());
+            return response()->json(
+                [
+                    'data' => $data,
+                    'message' => 'Thêm mới thành công!'
+                ],
+                200
+            );
+        });
     }
 
     public function edit(EditRequest $request)
     {
-        return $this->catchWeb(function () use ($request) {});
+        return $this->catchWeb(function () use ($request) {
+            $types = $this->documentTypeService->list(['paginate' => 0]);
+            $data = $this->documentService->findById($request->validated()['id']);
+            return view('pages.document.edit', [
+                'data' => $data,
+                'types' => $types,
+            ]);
+        });
     }
 
     public function update(UpdateRequest $request)
     {
-        return $this->catchWeb(function () use ($request) {});
+        return $this->catchAPI(function () use ($request) {
+            $data = $this->documentService->update($request->validated());
+            return response()->json(
+                [
+                    'data' => $data,
+                    'message' => 'Cập nhật thành công!'
+                ],
+                200
+            );
+        });
     }
 
     public function destroy(DestroyRequest $request)
     {
-        return $this->catchWeb(function () use ($request) {});
+        return $this->catchAPI(function () use ($request) {
+            $this->documentService->destroy($request->validated());
+            return response()->json(
+                [
+                    'message' => 'Xóa thành công!'
+                ],
+                200
+            );
+        });
     }
 }

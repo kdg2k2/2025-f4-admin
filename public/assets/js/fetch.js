@@ -76,11 +76,21 @@ const makeHttpRequest = (method = "get", url, params = {}, csrfToken = "") => {
                     : await response.text();
 
                 if (!response.ok) {
-                    const msg = data.message || data;
-                    if (data.errors)
-                        msg = Object.values(data.errors).flat().join(" - ");
-                    alertErr(msg);
-                    throw { status: response.status, data };
+                    if (data.errors) {
+                        Object.values(data.errors).forEach((errMsg) => {
+                            alertErr(errMsg);
+                        });
+                    } else {
+                        alertErr(data.message || data);
+                    }
+
+                    throw {
+                        response: {
+                            status: response.status,
+                            data: data,
+                        },
+                        message: data.message || data,
+                    };
                 }
 
                 return data;

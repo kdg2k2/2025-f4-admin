@@ -16,9 +16,11 @@ trait TryCatchTraits
             DB::commit();
             return $result;
         } catch (ValidationException $e) {
+            dd($e);
             throw $e;
         } catch (Exception $e) {
             DB::rollBack();
+            dd($e);
             throw $e;
         }
     }
@@ -29,8 +31,10 @@ trait TryCatchTraits
             $result = $callback();
             return $result;
         } catch (ValidationException $e) {
+            dd($e);
             throw $e;
         } catch (Exception $e) {
+            dd($e);
             throw $e;
         }
     }
@@ -40,11 +44,9 @@ trait TryCatchTraits
         try {
             return $callback();
         } catch (ValidationException $e) {
-            dd($e);
             $errors = $e->validator->errors()->all();
             return back()->with('err', implode(', ', $errors));
         } catch (Exception $e) {
-            dd($e);
             return back()->with('err', $e->getMessage());
         }
     }

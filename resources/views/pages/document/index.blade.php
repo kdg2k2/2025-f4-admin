@@ -6,9 +6,9 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header pb-0 card-no-border d-flex justify-content-between align-items-center">
-                            <h3>Danh sách loại tài liệu</h3>
+                            <h3>Danh sách tài liệu</h3>
                             <div>
-                                <a href="{{ route('document.type.create') }}" class="btn btn-outline-primary rounded-pill"
+                                <a href="{{ route('document.create') }}" class="btn btn-outline-primary rounded-pill"
                                     data-bs-toggle="tooltip" data-placement="top" title="Thêm mới">
                                     <i class="fal fa-plus-circle"></i>
                                 </a>
@@ -28,29 +28,45 @@
 @section('script')
     <script>
         const datatable = $('#datatable');
-        const listUrl = @json(route('document.type.list'));
-        const editUrl = @json(route('document.type.edit'));
-        const destroyUrl = @json(route('document.type.destroy'));
+        const listUrl = @json(route('document.list'));
+        const editUrl = @json(route('document.edit'));
+        const destroyUrl = @json(route('document.destroy'));
 
         const renderTable = (param) => {
             destroyDataTable(datatable);
             const dataTable = createDataTableServerSide(datatable, listUrl, [{
-                    data: 'name',
-                    title: 'Tên lĩnh vực',
+                    data: 'title',
+                    title: 'Tên tài liệu',
                 },
                 {
-                    data: 'field',
-                    title: 'Lĩnh vực',
+                    data: 'type',
+                    title: 'Loại tài liệu',
+                },
+                {
+                    data: 'price',
+                    title: 'Giá',
                 },
                 {
                     data: 'actions',
                     title: 'Hành động',
                 },
             ], (item) => ({
-                name: item.name ?? '',
-                field: item.field?.name ?? '',
+                title: item.title ?? '',
+                type: item.type?.name ?? '',
+                price: formatNumber(item.price) ?? '',
+                uploader: item.uploader?.name ?? '',
                 actions: `
                         <div class="text-center">
+                            <a target="_blank" href="https://view.officeapps.live.com/op/embed.aspx?src=${item.path}&embedded=true" title="Xem"
+                                class="btn btn-sm btn-outline-info rounded-pill mb-1" data-bs-toggle="tooltip"
+                                data-placement="top">
+                                <i class="fal fa-eye"></i>
+                            </a>
+                            <a target="_blank" href="${item.path}" title="Tải"
+                                class="btn btn-sm btn-outline-success rounded-pill mb-1" data-bs-toggle="tooltip"
+                                data-placement="top">
+                                <i class="fal fa-download"></i>
+                            </a>
                             <a href="${editUrl}?id=${item.id}" title="Cập nhật"
                                 class="btn btn-sm btn-outline-warning rounded-pill mb-1" data-bs-toggle="tooltip"
                                 data-placement="top">

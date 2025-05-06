@@ -16,7 +16,7 @@ class PdfToImageService extends BaseService
             throw new Exception("File pdf không tồn tại");
 
         $paths = [];
-
+        
         // 1) Khởi tạo instance
         $imagick = new Imagick();
 

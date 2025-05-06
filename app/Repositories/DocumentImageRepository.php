@@ -13,6 +13,6 @@ class DocumentImageRepository
 
     public function deleteByIdDocument(int $id)
     {
-        return DocumentImage::where('id_document', $id)->delete();
+        return DocumentImage::where('document_id', $id)->delete();
     }
 }
