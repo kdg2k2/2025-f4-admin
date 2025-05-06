@@ -14,17 +14,18 @@ class StoreRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            // 'per_page' => $this->per_page ?? null,
-            // 'page' => $this->page ?? null,
+            'uploader_id' => auth()->id(),
         ]);
     }
 
     public function rules(): array
     {
         return [
-            // 'paginate' => 'required|in:0,1',
-            // 'per_page' => 'nullable|integer|min:1',
-            // 'page' => 'nullable|integer|min:1',
+            'type_id' => 'required|integer|exists:document_types,id',
+            'uploader_id' => 'required|integer|exists:admins,id',
+            'title' => 'required|string',
+            'price' => 'required|integer|min:0',
+            'path' => 'required|mimes:pdf',
         ];
     }
 }

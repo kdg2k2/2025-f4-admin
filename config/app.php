@@ -188,4 +188,5 @@ return [
     'logo' => env('APP_LOGO'),
     'logo-white' => env('APP_LOGO_WHITE'),
     'default-avatar' => env('DEFAULT_AVATAR'),
+    'default-password' => env('DEFAULT_PASSWORD'),
 ];

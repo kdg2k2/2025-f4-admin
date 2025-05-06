@@ -22,9 +22,9 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'paginate' => 'required|in:0,1',
-            // 'per_page' => 'nullable|integer|min:1',
-            // 'page' => 'nullable|integer|min:1',
+            'id' => 'required|integer|exists:document_types,id',
+            'name' => 'required|string|unique:document_types,name,' . $this->id,
+            'field_id' => 'required|integer|exists:document_fields,id',
         ];
     }
 }

@@ -41,7 +41,7 @@ class DocumentRepository
         return $record;
     }
 
-    public function delete(array $request)
+    public function destroy(array $request)
     {
         return Document::find($request["id"])->delete();
     }

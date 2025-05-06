@@ -21,4 +21,32 @@ class DocumentTypeService extends BaseService
             return $records;
         });
     }
+
+    public function store(array $request)
+    {
+        return $this->transaction(function () use ($request) {
+            return $this->documentTypeRepository->store($request);
+        });
+    }
+
+    public function update(array $request)
+    {
+        return $this->transaction(function () use ($request) {
+            return $this->documentTypeRepository->update($request);
+        });
+    }
+
+    public function destroy(array $request)
+    {
+        return $this->transaction(function () use ($request) {
+            $this->documentTypeRepository->destroy($request);
+        });
+    }
+
+    public function findById(int $id)
+    {
+        return $this->tryThrow(function () use ($id) {
+            return $this->documentTypeRepository->findById($id);
+        });
+    }
 }

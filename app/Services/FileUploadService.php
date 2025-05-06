@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Storage;
+
 class FileUploadService extends BaseService
 {
     protected function storeInPublic($file, string $folder)
@@ -19,15 +21,17 @@ class FileUploadService extends BaseService
 
     protected function storeInStorage($file, string $folder)
     {
-        $folder = "uploads/$folder";
-        $publicFolder = storage_path($folder);
-        if (!is_dir($publicFolder))
-            mkdir($publicFolder, 0777, true);
-
         $name = $this->createName($file->getClientOriginalName());
-        $file->storeAs("public/$folder", $name);
 
-        return "$folder/$name";
+        // Lưu file; sẽ tự tạo folder nếu chưa có
+        $path = Storage::disk('public')->putFileAs(
+            "uploads/{$folder}",
+            $file,
+            $name
+        );
+    
+        // $path = "uploads/{$folder}/{$name}"
+        return $path;
     }
 
     protected function createName($name)

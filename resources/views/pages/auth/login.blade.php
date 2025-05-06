@@ -5,8 +5,8 @@
             <div>
                 <div>
                     <a class="logo" href="/">
-                        <img width="300" class="img-fluid for-light m-auto" src="{{ env('APP_LOGO') }}" alt="looginpage" />
-                        <img width="300" class="img-fluid for-dark" src="{{ env('APP_LOGO') }}" alt="logo" />
+                        <img width="300" class="img-fluid for-light m-auto" src="{{ config('app.logo') }}" alt="looginpage" />
+                        <img width="300" class="img-fluid for-dark" src="{{ config('app.logo') }}" alt="logo" />
                     </a>
                 </div>
                 <div class="card border mb-0">

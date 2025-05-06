@@ -18,7 +18,7 @@ class AuthController extends Controller
         $res = $this->authService->getLogin();
         if ($res)
             return redirect($res);
-        return view('auth.login');
+        return view('pages.auth.login');
     }
 
     public function postLogin(LoginRequest $request)

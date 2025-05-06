@@ -15,10 +15,10 @@ class AdminSeeder extends Seeder
     {
         Admin::truncate();
         Admin::create([
-            "name" => env("APP_NAME"),
-            "email" => env("MAIL_FROM_ADDRESS"),
-            "password" => bcrypt(env("DEFAULT_PASSWORD")),
-            "path" => null,
+            'name' => config('app.name'),
+            'email' => config('mail.from.address'),
+            'password' => bcrypt(config('app.default-password')),
+            'path' => null,
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\DocumentRepository;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentService extends BaseService
 {
@@ -30,7 +31,6 @@ class DocumentService extends BaseService
     {
         return $this->transaction(function () use ($request) {
             $request = $this->prepareData($request)['request'];
-
             $record = $this->documentRepository->store($request);
             $this->renderImage($record->id);
 
@@ -68,10 +68,10 @@ class DocumentService extends BaseService
         });
     }
 
-    public function delete(array $request)
+    public function destroy(array $request)
     {
         return $this->tryThrow(function () use ($request) {
-            return $this->documentRepository->delete($request);
+            return $this->documentRepository->destroy($request);
         });
     }
 
@@ -85,6 +85,7 @@ class DocumentService extends BaseService
     {
         if (!empty($record['uploader']))
             $record['uploader']['path'] = $this->getAssetImage($record['uploader']['path']);
+        $record['path'] = Storage::disk('public')->url($record['path']);
         return $record;
     }
 
@@ -118,16 +119,16 @@ class DocumentService extends BaseService
             $document = $this->documentRepository->findById($id);
             $this->documentImageService->deleteByIdDocument($id);
 
-            $fullPathToPdf = storage_path($document->path);
+            $fullPathToPdf = storage_path('app/public/' . $document->path);
             if (!file_exists($fullPathToPdf))
                 throw new Exception("File gốc không tồn tại");
 
-            $folder = "uploads/documents/$id/images";
+            $folder = "app/public/uploads/documents/$id/images";
             $outputDir = storage_path($folder);
             if (!is_dir($outputDir))
                 mkdir($outputDir, 0777, true);
 
-            $paths = (new PdfToImageService())->pdfToImage($fullPathToPdf, "public/$outputDir");
+            $paths = (new PdfToImageService())->pdfToImage($fullPathToPdf, $outputDir);
             $paths = array_map(function ($item) use ($id, $folder) {
                 return [
                     "id_document" => $id,
