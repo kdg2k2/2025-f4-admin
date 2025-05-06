@@ -16,6 +16,7 @@ class ListRequest extends FormRequest
         $this->merge([
             'per_page' => $this->per_page ?? null,
             'page' => $this->page ?? null,
+            'field_id' => $this->field_id ?? null,
         ]);
     }
 
@@ -25,6 +26,7 @@ class ListRequest extends FormRequest
             'paginate' => 'required|in:0,1',
             'per_page' => 'nullable|integer|min:1',
             'page' => 'nullable|integer|min:1',
+            'field_id' => 'nullable|integer|exists:document_fields,id',
         ];
     }
 }

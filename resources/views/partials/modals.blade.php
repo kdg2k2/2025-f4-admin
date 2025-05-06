@@ -80,8 +80,6 @@
         const trigger = $(e.relatedTarget);
         const deleteUrl = trigger.data('href');
         const onSuccessFnName = trigger.data('onsuccess');
-        console.log(onSuccessFnName);
-        console.log(typeof window[onSuccessFnName]);
 
         btnDelete.on('click', function(evt) {
             evt.preventDefault();
