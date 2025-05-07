@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
     protected $guarded = [];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

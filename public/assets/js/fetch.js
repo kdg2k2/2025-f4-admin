@@ -27,6 +27,10 @@ const makeHttpRequest = (method = "get", url, params = {}, csrfToken = "") => {
             redirect: "manual",
             credentials: "include", // include cookies in request
             signal,
+            headers: {
+                Accept: "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+            },
         };
 
         let fetchUrl = url;
@@ -35,14 +39,11 @@ const makeHttpRequest = (method = "get", url, params = {}, csrfToken = "") => {
             // handle file upload vs JSON
             if (params instanceof FormData) {
                 params.append("_token", csrfToken);
-                fetchOptions.headers = {
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRF-Token": csrfToken,
-                };
+                fetchOptions.headers["X-CSRF-Token"] = csrfToken;
                 fetchOptions.body = params;
             } else {
                 const body = { ...params, _token: csrfToken };
-                fetchOptions.headers = { "Content-Type": "application/json" };
+                fetchOptions.headers["Content-Type"] = "application/json";
                 fetchOptions.body = JSON.stringify(body);
             }
         } else if (Object.keys(params).length) {
@@ -52,23 +53,6 @@ const makeHttpRequest = (method = "get", url, params = {}, csrfToken = "") => {
 
         fetch(fetchUrl, fetchOptions)
             .then(async (response) => {
-                // if (
-                //     response.type === "opaqueredirect" ||
-                //     response.status === 302
-                // ) {
-                //     throw {
-                //         status: response.status,
-                //         message: "Không có quyền truy cập!",
-                //     };
-                // }
-
-                // if (response.status >= 500) {
-                //     throw {
-                //         status: response.status,
-                //         message: response.statusText,
-                //     };
-                // }
-
                 const contentType = response.headers.get("content-type") || "";
                 const isJson = contentType.includes("application/json");
                 const data = isJson
@@ -111,55 +95,7 @@ const makeHttpRequest = (method = "get", url, params = {}, csrfToken = "") => {
 };
 
 const apiRequest = async (method, url, params = {}, csrfToken = "") => {
-    try {
-        return await makeHttpRequest(method, url, params, csrfToken);
-    } catch (err) {
-        if (err.status === 401) {
-            if (!isRefreshing) {
-                isRefreshing = true;
-                refreshPromise = makeHttpRequest(
-                    "post",
-                    "/api/auth/refresh",
-                    {},
-                    csrfToken
-                )
-                    .then(() => {
-                        isRefreshing = false;
-                        // Retry all queued requests
-                        requestQueue.forEach((cb) => cb.resolve());
-                        requestQueue = [];
-                    })
-                    .catch((refreshErr) => {
-                        isRefreshing = false;
-                        requestQueue.forEach((cb) => cb.reject(refreshErr));
-                        requestQueue = [];
-                        window.location.href = "/login";
-                        throw refreshErr;
-                    });
-            }
-
-            return new Promise((resolve, reject) => {
-                requestQueue.push({
-                    resolve: async () => {
-                        try {
-                            const data = await makeHttpRequest(
-                                method,
-                                url,
-                                params,
-                                csrfToken
-                            );
-                            resolve(data);
-                        } catch (retryErr) {
-                            reject(retryErr);
-                        }
-                    },
-                    reject,
-                });
-            });
-        }
-
-        throw err;
-    }
+    return await makeHttpRequest(method, url, params, csrfToken);
 };
 
 class HttpIntant {

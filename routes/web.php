@@ -33,8 +33,9 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::middleware('isLogin')->group(function () {
-    Route::controller(DashboardController::class)->group(function () {
-        Route::get('dashboard', 'dashboard')->name('dashboard');
+    Route::prefix('dashboard')->controller(DashboardController::class)->group(function () {
+        Route::get('index', 'index')->name('dashboard.index');
+        Route::get('load-revenue-data', 'loadRevenueData')->name('dashboard.load-revenue-data');
     });
 
     Route::prefix('user')->controller(UserController::class)->group(function () {

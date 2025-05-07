@@ -31,10 +31,6 @@
     <script src="template-admin/admin/js/config.js"></script>
     <script src="template-admin/admin/js/scrollbar/simplebar.js"></script>
     <script src="template-admin/admin/js/scrollbar/custom.js"></script>
-    <script src="template-admin/admin/js/slick/slick.min.js"></script>
-    <script src="template-admin/admin/js/slick/slick.js"></script>
-    <script src="template-admin/admin/js/animation/tilt/tilt.jquery.js"></script>
-    <script src="template-admin/admin/js/animation/tilt/tilt-custom.js"></script>
 
     <script src="assets/js/datatables/js/jquery.dataTables.min.js"></script>
     <script src="assets/js/datatables/datatables-responsive/js/dataTables.responsive.min.js"></script>

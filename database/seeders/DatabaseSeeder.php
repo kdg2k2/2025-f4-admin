@@ -3,8 +3,13 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Order;
+use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,6 +21,7 @@ class DatabaseSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         $this->call(AdminSeeder::class);
+        $this->call(PaymentSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

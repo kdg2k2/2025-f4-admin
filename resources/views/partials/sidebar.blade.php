@@ -14,7 +14,7 @@
             </li>
             <li class="sidebar-list">
                 <i class="fa-solid fa-thumbtack"></i>
-                <a class="sidebar-link" href="template-admin/admin/dashboard">
+                <a class="sidebar-link" href="{{ route('dashboard.index') }}">
                     <svg class="stroke-icon">
                         <use href="template-admin/admin/svg/iconly-sprite.svg#Home-dashboard"></use>
                     </svg>

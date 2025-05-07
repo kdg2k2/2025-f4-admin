@@ -5,12 +5,7 @@
 <link rel="stylesheet" href="template-admin/admin/css/iconly-icon.css" />
 <link rel="stylesheet" href="template-admin/admin/css/bulk-style.css" />
 <link rel="stylesheet" href="template-admin/admin/css/themify.css" />
-<link rel="stylesheet" href="template-admin/admin/css/fontawesome-min.css" />
-<link rel="stylesheet" type="text/css" href="template-admin/admin/css/vendors/weather-icons/weather-icons.min.css" />
 <link rel="stylesheet" type="text/css" href="template-admin/admin/css/vendors/scrollbar.css" />
-@yield('header')
-<link rel="stylesheet" type="text/css" href="template-admin/admin/css/vendors/slick.css" />
-<link rel="stylesheet" type="text/css" href="template-admin/admin/css/vendors/slick-theme.css" />
 <link rel="stylesheet" href="template-admin/admin/css/style.css" />
 <link id="color" rel="stylesheet" href="template-admin/admin/css/color-1.css" media="screen" />
 <link href="template-admin/css/notify.css" rel="stylesheet" />
