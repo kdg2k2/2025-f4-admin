@@ -60,6 +60,22 @@
 
             <li class="sidebar-main-title">
                 <div>
+                    <h5 class="f-w-700 sidebar-title pt-3">Gói dịch vụ</h5>
+                </div>
+            </li>
+
+            <li class="sidebar-list">
+                <i class="fa-solid fa-thumbtack"></i>
+                <a class="sidebar-link" href="{{ route('package.index') }}">
+                    <svg class="stroke-icon">
+                        <use href="../template-admin/admin/svg/iconly-sprite.svg#Document"></use>
+                    </svg>
+                    <h6 class="f-w-600">Danh sách gói</h6>
+                </a>
+            </li>
+
+            <li class="sidebar-main-title">
+                <div>
                     <h5 class="f-w-700 sidebar-title pt-3">Tài khoản</h5>
                 </div>
             </li>

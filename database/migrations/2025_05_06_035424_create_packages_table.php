@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->integer('download_document_limit');
             $table->integer('price');
-            $table->integer('duration_days');
+            $table->integer('duration_days')->nullable();
         });
     }
 

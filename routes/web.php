@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentFieldController;
 use App\Http\Controllers\DocumentTypeController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -86,5 +87,15 @@ Route::middleware('isLogin')->group(function () {
             Route::patch('update', 'update')->name('document.update');
             Route::delete('destroy', 'destroy')->name('document.destroy');
         });
+    });
+
+    Route::prefix('package')->controller(PackageController::class)->group(function () {
+        Route::get('index', 'index')->name('package.index');
+        Route::get('list', 'list')->name('package.list');
+        Route::get('create', 'create')->name('package.create');
+        Route::post('store', 'store')->name('package.store');
+        Route::get('edit', 'edit')->name('package.edit');
+        Route::patch('update', 'update')->name('package.update');
+        Route::delete('destroy', 'destroy')->name('package.destroy');
     });
 });
