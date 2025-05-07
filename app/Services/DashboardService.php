@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
-
 class DashboardService extends BaseService
 {
     protected $orderService;
+    protected $dateService;
     public function __construct()
     {
+        $this->dateService = app(DateService::class);
         $this->orderService = app(OrderService::class);
     }
 
@@ -29,7 +29,7 @@ class DashboardService extends BaseService
                     'color' => '#f9d8af'
                 ],
             ];
-            $days = $this->getWeekday(date('Y-m-d'));
+            $days = $this->dateService->getWeekday(date('Y-m-d'));
             $from = $request['from'] ?? $days[0];
             $to = $request['to'] ?? $days[6];
             $orders = $this->orderService->list([
@@ -88,21 +88,5 @@ class DashboardService extends BaseService
 
             return $res;
         });
-    }
-
-
-
-    protected function getWeekday($today)
-    {
-
-        $today = Carbon::parse($today);
-
-        $startOfWeek = $today->startOfWeek();
-        $daysOfWeek = [];
-
-        for ($i = 0; $i < 7; $i++)
-            $daysOfWeek[] = $startOfWeek->copy()->addDays($i)->format('Y-m-d');
-
-        return $daysOfWeek;
     }
 }
