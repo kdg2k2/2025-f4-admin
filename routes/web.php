@@ -38,6 +38,12 @@ Route::middleware('isLogin')->group(function () {
 
     Route::prefix('user')->controller(UserController::class)->group(function () {
         Route::get('index', 'index')->name('user.index');
+        Route::get('list', 'list')->name('user.list');
+        Route::get('create', 'create')->name('user.create');
+        Route::post('store', 'store')->name('user.store');
+        Route::get('edit', 'edit')->name('user.edit');
+        Route::patch('update', 'update')->name('user.update');
+        Route::delete('destroy', 'destroy')->name('user.destroy');
     });
 
     Route::prefix('admin')->controller(AdminController::class)->group(function () {
