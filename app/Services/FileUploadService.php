@@ -23,7 +23,6 @@ class FileUploadService extends BaseService
     {
         $name = $this->createName($file->getClientOriginalName());
 
-        // Lưu file; sẽ tự tạo folder nếu chưa có
         $path = Storage::disk('public')->putFileAs(
             "uploads/{$folder}",
             $file,

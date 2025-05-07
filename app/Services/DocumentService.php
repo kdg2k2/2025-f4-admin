@@ -131,7 +131,7 @@ class DocumentService extends BaseService
             $paths = (new PdfToImageService())->pdfToImage($fullPathToPdf, $outputDir);
             $paths = array_map(function ($item) use ($id, $folder) {
                 return [
-                    "id_document" => $id,
+                    "document_id" => $id,
                     "path" => "$folder/$item",
                 ];
             }, $paths);
