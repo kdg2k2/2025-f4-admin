@@ -16,7 +16,7 @@ class PdfToImageService extends BaseService
             throw new Exception("File pdf không tồn tại");
 
         $paths = [];
-        
+
         // 1) Khởi tạo instance
         $imagick = new Imagick();
 
@@ -40,7 +40,7 @@ class PdfToImageService extends BaseService
             // 6. ghi file
             $time = date('dmYHis');
             $name = "$time.png";
-            $imagick->writeImage("$outputDir/$name");
+            $imagick->writeImage("app/public/$outputDir/$name");
             $imagick->clear();
 
             $paths[] = $name;
@@ -50,22 +50,21 @@ class PdfToImageService extends BaseService
         return $paths;
     }
 
-    public function imagesToPdf(array $images, string $outputDir, string $fileName)
+    public function imagesToPdf(array $images, string $relativeFolder, string $fileName)
     {
-        if (empty($images))
-            return null;
-
-        $path = "$outputDir/$fileName";
-        if (!is_dir(public_path($outputDir)))
-            mkdir($outputDir, 0777, true);
+        $absoluteFolder = storage_path("app/public/{$relativeFolder}");
+        if (!is_dir($absoluteFolder))
+            mkdir($absoluteFolder, 0777, true);
 
         $imagick = new Imagick();
-        foreach ($images as $image)
+        foreach ($images as $image) {
             $imagick->readImage($image);
-
+        }
         $imagick->setImageFormat('pdf');
-        $imagick->writeImages(public_path($path), true);
 
-        return $path;
+        $absolutePath = "{$absoluteFolder}/{$fileName}";
+        $imagick->writeImages($absolutePath, true);
+
+        return "{$relativeFolder}/{$fileName}";
     }
 }

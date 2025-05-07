@@ -8,7 +8,7 @@
 # 2. tải và cài ImageMagick PHP extension cho Windows
 
     - note: khi upload document sẽ dùng thư viện này đọc pdf thành ảnh
-    - Cài đặt Qgis (https://download.osgeo.org/qgis/win64/QGIS-OSGeo4W-3.16.16-1-Setup-x86_64.exe) rồi gắn /bin của Qgis vào PATH để sử dụng ghostScript (ImageMagick cần dùng ghostScript)
+    - Cài đặt Qgis (https://download.osgeo.org/qgis/windows/QGIS-OSGeo4W-3.16.16-1.msi) rồi gắn /bin của Qgis vào PATH để sử dụng ghostScript (ImageMagick cần dùng ghostScript)
     - Doc ImageMagick: https://mlocati.github.io/articles/php-windows-imagick.html
 
 # 3. đặt lại APP_URL trong .env

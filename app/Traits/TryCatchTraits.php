@@ -34,7 +34,7 @@ trait TryCatchTraits
             // dd($e);
             throw $e;
         } catch (Exception $e) {
-            // dd($e);
+            dd($e);
             throw $e;
         }
     }
