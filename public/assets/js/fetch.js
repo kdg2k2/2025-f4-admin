@@ -52,22 +52,22 @@ const makeHttpRequest = (method = "get", url, params = {}, csrfToken = "") => {
 
         fetch(fetchUrl, fetchOptions)
             .then(async (response) => {
-                if (
-                    response.type === "opaqueredirect" ||
-                    response.status === 302
-                ) {
-                    throw {
-                        status: response.status,
-                        message: "Không có quyền truy cập!",
-                    };
-                }
+                // if (
+                //     response.type === "opaqueredirect" ||
+                //     response.status === 302
+                // ) {
+                //     throw {
+                //         status: response.status,
+                //         message: "Không có quyền truy cập!",
+                //     };
+                // }
 
-                if (response.status >= 500) {
-                    throw {
-                        status: response.status,
-                        message: response.statusText,
-                    };
-                }
+                // if (response.status >= 500) {
+                //     throw {
+                //         status: response.status,
+                //         message: response.statusText,
+                //     };
+                // }
 
                 const contentType = response.headers.get("content-type") || "";
                 const isJson = contentType.includes("application/json");

@@ -81,7 +81,7 @@
         const deleteUrl = trigger.data('href');
         const onSuccessFnName = trigger.data('onsuccess');
 
-        btnDelete.on('click', function(evt) {
+        btnDelete.off('click').on('click', function(evt) {
             evt.preventDefault();
 
             apiRequest('post', deleteUrl, {

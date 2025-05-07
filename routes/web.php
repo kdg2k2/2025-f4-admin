@@ -42,6 +42,12 @@ Route::middleware('isLogin')->group(function () {
 
     Route::prefix('admin')->controller(AdminController::class)->group(function () {
         Route::get('index', 'index')->name('admin.index');
+        Route::get('list', 'list')->name('admin.list');
+        Route::get('create', 'create')->name('admin.create');
+        Route::post('store', 'store')->name('admin.store');
+        Route::get('edit', 'edit')->name('admin.edit');
+        Route::patch('update', 'update')->name('admin.update');
+        Route::delete('destroy', 'destroy')->name('admin.destroy');
     });
 
     Route::prefix('document')->group(function () {

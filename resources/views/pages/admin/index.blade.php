@@ -14,9 +14,9 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header pb-0 card-no-border d-flex justify-content-between align-items-center">
-                            <h3>Danh sách</h3>
+                            <h3>Danh sách quản trị viên</h3>
                             <div>
-                                <a href="{{ route('admins.create') }}" class="btn btn-primary">Thêm mới</a>
+                                <a href="{{ route('admin.create') }}" class="btn btn-primary">Thêm mới</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -34,9 +34,9 @@
 @section('script')
     <script>
         const datatable = $('#datatable');
-        const listUrl = @json(route('api.list'));
-        const editUrl = @json(route('admins.edit'));
-        const deleteUrl = @json(route('api.delete'));
+        const listUrl = @json(route('admin.list'));
+        const editUrl = @json(route('admin.edit'));
+        const destroyUrl = @json(route('admin.destroy'));
 
         const initDataTable = () => {
             destroyDataTable(datatable);
@@ -53,14 +53,6 @@
                     title: 'Email',
                 },
                 {
-                    data: 'address',
-                    title: 'Địa chỉ',
-                },
-                {
-                    data: 'unit',
-                    title: 'Đơn vị',
-                },
-                {
                     data: 'actions',
                     title: 'Hành động',
                 },
@@ -70,8 +62,6 @@
                     '',
                 name: item.name ?? '',
                 email: item.email ?? '',
-                address: item.address ?? '',
-                unit: item.unit?.name ?? '',
                 actions: `
                     <div class="text-center">
                         <a href="${editUrl}?id=${item.id}" title="Cập nhật"
@@ -79,7 +69,7 @@
                             data-placement="top">
                             <i class="fal fa-edit"></i>
                         </a>
-                        <a title="Xóa" data-href="${deleteUrl}?id=${item.id}" data-onsuccess="main" data-bs-toggle="modal" data-bs-target="#confirm-delete" title="Xóa" class="btn btn-sm btn-outline-danger rounded-pill mb-1" data-bs-toggle="tooltip" data-placement="top">
+                        <a title="Xóa" data-toggle="tooltip" data-placement="top" data-href="${destroyUrl}?id=${item.id}" data-onsuccess="main" data-bs-toggle="modal" data-bs-target="#confirm-delete" class="btn btn-sm btn-outline-danger rounded-pill mb-1">
                             <i class="fal fa-trash-alt"></i>
                         </a>
                     </div>

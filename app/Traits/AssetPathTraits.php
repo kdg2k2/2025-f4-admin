@@ -6,7 +6,7 @@ trait AssetPathTraits
 {
     public function getAssetImage($url)
     {
-        $path = env('APP_LOGO');
+        $path = config('app.default-avatar');
         if (!empty($url))
             $path = $url;
         return $this->getAssetUrl($path);

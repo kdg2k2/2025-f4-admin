@@ -11,7 +11,7 @@
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-header pb-0 card-no-border d-flex justify-content-between align-items-center">
-                                <h3>Cập nhật quản trị viên</h3>
+                                <h3>Thêm mới quản trị viên</h3>
                                 <div>
                                     <a href="{{ route('admin.index') }}" class="btn btn-primary">Danh sách</a>
                                 </div>
@@ -23,27 +23,25 @@
                                             <label for="name" class="form-label">
                                                 Tên quản trị viên
                                             </label>
-                                            <input required type="text" class="form-control" name="name"
-                                                value="{{ $data['name'] }}">
+                                            <input required type="text" class="form-control" name="name">
                                         </div>
                                         <div class="col-md-6 col-12 mb-3">
                                             <label for="email" class="form-label">
                                                 Email
                                             </label>
-                                            <input required type="text" class="form-control" name="email"
-                                                value="{{ $data['email'] }}">
+                                            <input required type="text" class="form-control" name="email">
                                         </div>
                                         <div class="col-md-6 col-12 mb-3">
                                             <label for="password" class="form-label">
                                                 Mật khẩu
                                             </label>
-                                            <input type="password" class="form-control" name="password">
+                                            <input required type="password" class="form-control" name="password">
                                         </div>
                                         <div class="col-md-6 col-12 mb-3">
                                             <label for="path" class="form-label">
                                                 Chọn ảnh đại diện
                                             </label>
-                                            <input type="file" class="form-control" name="path"
+                                            <input required type="file" class="form-control" name="path"
                                                 accept=".png,.jpg,.jpeg">
                                         </div>
                                     </div>
@@ -63,7 +61,7 @@
 @section('script')
     <script>
         const listUrl = @json(route('admin.index'));
-        const updateUrl = @json(route('admin.update')) + '?id=' + @json($data['id']);
+        const storeUrl = @json(route('admin.store'));
 
         $(document).ready(function() {
             $("#post-form").on("submit", async function(e) {
@@ -71,14 +69,14 @@
                     e.preventDefault();
                     const formData = new FormData(this);
 
-                    if (!formData.get("password")) formData.delete("password");
-                    if (!formData.get("path")) formData.delete("path");
-
                     const {
                         message
-                    } = await http.patch(updateUrl, formData, @json(csrf_token()));
+                    } = await http.post(storeUrl, formData, @json(csrf_token()));
 
                     alertSuccess(message);
+
+                    this.reset();
+                    refreshSumoSelect()
 
                     setTimeout(() => (window.location.href = listUrl), 1000);
                 } catch (error) {

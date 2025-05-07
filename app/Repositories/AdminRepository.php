@@ -17,19 +17,14 @@ class AdminRepository
         return $record->toArray();
     }
 
-    public function update(array $request, $removeOldPath)
+    public function update(array $request)
     {
         $record = Admin::find($request["id"]);
-
-        if ($removeOldPath == true && !empty($record->path))
-            if (file_exists(public_path($record->path)))
-                unlink(public_path($record->path));
-
         $record->update($request);
         return $record->toArray();
     }
 
-    public function delete(array $request)
+    public function destroy(array $request)
     {
         return Admin::find($request["id"])->delete();
     }
