@@ -15,14 +15,14 @@ class AuthService extends BaseService
     public function getLogin()
     {
         if (auth()->check())
-            return route('dashboard');
+            return route('dashboard.index');
         return null;
     }
 
     public function postLogin(array $request)
     {
         return $this->tryThrow(function () use ($request) {
-            $route = route('dashboard');
+            $route = route('dashboard.index');
             if (auth()->attempt(['email' => $request['email'], 'password' => $request['password']], $request['remember'])) {
                 $previousUrl = session('url.previous');
                 session()->forget('url.previous');
