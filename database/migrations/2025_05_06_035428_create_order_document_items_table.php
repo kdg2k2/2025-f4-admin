@@ -17,6 +17,8 @@ return new class extends Migration
             $table->softDeletes();
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('document_id')->constrained('documents')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer('price');
+            $table->integer('original_price')->default(0);
         });
     }
 

@@ -18,6 +18,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('order_code')->unique();
             $table->integer('total_amount');
+            $table->integer('discount')->default(0);
+            $table->integer('subtotal')->default(0);
+            $table->enum('type', ['none', 'package'])->default('none');
             $table->enum('status', ['pending', 'paid', 'cancelled', 'complete'])->default('pending');
         });
     }

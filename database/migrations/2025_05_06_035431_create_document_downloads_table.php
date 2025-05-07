@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('document_id')->constrained('documents')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('code')->unique();
             $table->dateTime('expires_at');
-            $table->dateTime('download_time');
+            $table->dateTime('download_time')->nullable();
             $table->string('ip_address');
         });
     }
