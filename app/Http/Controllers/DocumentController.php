@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Document\DestroyRequest;
+use App\Http\Requests\Document\DownloadRequest;
 use App\Http\Requests\Document\EditRequest;
 use App\Http\Requests\Document\ListRequest;
+use App\Http\Requests\Document\ShowRequest;
 use App\Http\Requests\Document\StoreRequest;
 use App\Http\Requests\Document\UpdateRequest;
 use App\Services\DocumentService;
@@ -98,6 +100,28 @@ class DocumentController extends Controller
                 [
                     'message' => 'Xóa thành công!'
                 ],
+                200
+            );
+        });
+    }
+
+    public function show(ShowRequest $request)
+    {
+        return $this->catchAPI(function () use ($request) {
+            $res = $this->documentService->show($request->validated());
+            return response()->json(
+                $res,
+                200
+            );
+        });
+    }
+
+    public function download(DownloadRequest $request)
+    {
+        return $this->catchAPI(function () use ($request) {
+            $res = $this->documentService->download($request->validated());
+            return response()->json(
+                $res,
                 200
             );
         });
