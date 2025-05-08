@@ -8,7 +8,10 @@ class AdminRepository
 {
     public function list(array $request)
     {
-        return Admin::orderByDesc("id")->get()->toArray();
+        $query = Admin::orderByDesc("id");
+        if (!empty($request['search']))
+            $query->where('name', 'like', '%' . $request['search'] . '%');
+        return $query->get()->toArray();
     }
 
     public function store(array $request)

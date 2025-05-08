@@ -8,7 +8,10 @@ class PackageRepository
 {
     public function list(array $request)
     {
-        return Package::orderByDesc("id")->get()->toArray();
+        $query = Package::orderByDesc("id");
+        if (!empty($request['search']))
+            $query->where('name', 'like', '%' . $request['search'] . '%');
+        return $query->get()->toArray();
     }
 
     public function store(array $request)

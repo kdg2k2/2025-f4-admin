@@ -8,7 +8,12 @@ class UserRepository
 {
     public function list(array $request)
     {
-        return User::orderByDesc("id")->get()->toArray();
+        $q = User::orderByDesc("id");
+
+        if (!empty($request['search']))
+            $q->where('email', 'like', '%' . $request['search'] . '%')->orWhere('name', 'like', '%' . $request['search'] . '%');
+
+        return $q->get()->toArray();
     }
 
     public function store(array $request)

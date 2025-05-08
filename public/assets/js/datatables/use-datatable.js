@@ -15,7 +15,7 @@ const createDataTableServerSide = (
         lengthChange: true,
         autoWidth: false,
         ordering: false,
-        searching: false,
+        searching: true,
         lengthMenu: [
             [10, 50, 100],
             [10, 50, 100],
@@ -38,11 +38,13 @@ const createDataTableServerSide = (
         ajax: (data, callback) => {
             const page = Math.floor(data.start / data.length) + 1;
             const perPage = data.length;
+            const search = data.search.value;
 
             apiRequest("get", apiUrl, {
                 ...extraParams,
                 page,
                 per_page: perPage,
+                search: search,
             }).then((res) => {
                 const items = res?.data?.data ?? [];
                 callback({

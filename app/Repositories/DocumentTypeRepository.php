@@ -11,8 +11,9 @@ class DocumentTypeRepository
         $query = DocumentType::orderByDesc("id")->with('field');
         if (!empty($request['field_id']))
             $query->where('field_id', $request['field_id']);
-        $records = $query->get()->toArray();
-        return $records;
+        if (!empty($request['search']))
+            $query->where('name', 'like', '%' . $request['search'] . '%');
+        return $query->get()->toArray();
     }
 
     public function store(array $request)
