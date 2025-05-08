@@ -57,7 +57,7 @@
                 uploader: item.uploader?.name ?? '',
                 actions: `
                         <div class="text-center">
-                            <a target="_blank" href="${item.path}" title="Tải"
+                            <a target="_blank" href="${item.path}" title="Xem"
                                 class="btn btn-sm btn-outline-success rounded-pill mb-1" data-bs-toggle="tooltip"
                                 data-placement="top">
                                 <i class="fal fa-eye"></i>
