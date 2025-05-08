@@ -5,6 +5,31 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
+                        <div class="card-body row">
+                            <div class="col-lg-3 col-md-6">
+                                <label for="field_id">
+                                    Lĩnh vực
+                                </label>
+                                <select id="field_id">
+                                    <option value="">[Chọn]</option>
+                                    @foreach ($fields as $item)
+                                        <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <label for="type_id">
+                                    Loại tài liệu
+                                </label>
+                                <select id="type_id">
+                                    <option value="">[Chọn]</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="card">
                         <div class="card-header pb-0 card-no-border d-flex justify-content-between align-items-center">
                             <h3>Danh sách tài liệu</h3>
                             <div>
@@ -31,12 +56,17 @@
         const listUrl = @json(route('document.list'));
         const editUrl = @json(route('document.edit'));
         const destroyUrl = @json(route('document.destroy'));
+        const fileds = @json($fields);
 
         const renderTable = (param) => {
             destroyDataTable(datatable);
             const dataTable = createDataTableServerSide(datatable, listUrl, [{
                     data: 'title',
                     title: 'Tên tài liệu',
+                },
+                {
+                    data: 'field',
+                    title: 'Loại lĩnh vực',
                 },
                 {
                     data: 'type',
@@ -52,6 +82,7 @@
                 },
             ], (item) => ({
                 title: item.title ?? '',
+                field: item.type?.field?.name ?? '',
                 type: item.type?.name ?? '',
                 price: formatNumber(item.price) ?? '',
                 uploader: item.uploader?.name ?? '',
@@ -80,6 +111,26 @@
                 paginate: 1
             });
         }
+
+        $('#field_id').on('change', function() {
+            const val = $(this).val();
+            renderTable({
+                paginate: 1,
+                field_id: val,
+            });
+            const filed = fileds.find((value, index) => value.id == val);
+            let options = '<option value="">[Chọn]</option>' + filed.types.map((value, index) =>
+                `<option value="${value.id}">${value.name}</option>`).join('');
+            $('#type_id').html(options);
+            refreshSumoSelect();
+        })
+
+        $('#type_id').on('change', function() {
+            renderTable({
+                paginate: 1,
+                type_id: $(this).val(),
+            });
+        })
 
         $(document).ready(() => {
             refreshSumoSelect()

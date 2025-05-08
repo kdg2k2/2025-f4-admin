@@ -8,7 +8,7 @@ class DocumentFieldRepository
 {
     public function list(array $request)
     {
-        return DocumentField::orderByDesc("id")->get()->toArray();
+        return DocumentField::orderByDesc("id")->with('types')->get()->toArray();
     }
 
     public function store(array $request)

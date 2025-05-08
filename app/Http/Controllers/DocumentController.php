@@ -9,7 +9,7 @@ use App\Http\Requests\Document\ListRequest;
 use App\Http\Requests\Document\ShowRequest;
 use App\Http\Requests\Document\StoreRequest;
 use App\Http\Requests\Document\UpdateRequest;
-use App\Http\Requests\Document\ViewRequest;
+use App\Services\DocumentFieldService;
 use App\Services\DocumentService;
 use App\Services\DocumentTypeService;
 
@@ -17,8 +17,10 @@ class DocumentController extends Controller
 {
     protected $documentService;
     protected $documentTypeService;
+    protected $documentFieldService;
     public function __construct()
     {
+        $this->documentFieldService = app(DocumentFieldService::class);
         $this->documentTypeService = app(DocumentTypeService::class);
         $this->documentService = app(DocumentService::class);
     }
@@ -26,9 +28,9 @@ class DocumentController extends Controller
     public function index()
     {
         return $this->catchWeb(function () {
-            $types = $this->documentService->list(['paginate' => 0]);
+            $fields = $this->documentFieldService->list(['paginate' => 0]);
             return view("pages.document.index", [
-                'types' => $types,
+                'fields' => $fields,
             ]);
         });
     }
