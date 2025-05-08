@@ -23,7 +23,6 @@ class DownloadRequest extends FormRequest
     {
         return [
             'document_id' => 'required|integer|exists:documents,id',
-            'user_id' => 'required|integer|exists:users,id',
         ];
     }
 }
