@@ -17,6 +17,7 @@ class ListRequest extends FormRequest
             'per_page' => $this->per_page ?? null,
             'page' => $this->page ?? null,
             'field_id' => $this->field_id ?? null,
+            'search' => $this->search ?? null,
         ]);
     }
 
@@ -27,6 +28,7 @@ class ListRequest extends FormRequest
             'per_page' => 'nullable|integer|min:1',
             'page' => 'nullable|integer|min:1',
             'field_id' => 'nullable|integer|exists:document_fields,id',
+            'search' => 'nullable|string',
         ];
     }
 }

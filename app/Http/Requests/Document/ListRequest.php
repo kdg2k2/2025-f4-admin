@@ -19,6 +19,7 @@ class ListRequest extends FormRequest
             'field_id' => $this->field_id ?? null,
             'type_id' => $this->type_id ?? null,
             'uploader_id' => $this->uploader_id ?? null,
+            'search' => $this->search ?? null,
         ]);
     }
 
@@ -31,6 +32,7 @@ class ListRequest extends FormRequest
             'field_id' => 'nullable|integer|exists:document_fields,id',
             'type_id' => 'nullable|integer|exists:document_types,id',
             'uploader_id' => 'nullable|integer|exists:admins,id',
+            'search' => 'nullable|string',
         ];
     }
 }

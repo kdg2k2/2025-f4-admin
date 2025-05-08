@@ -8,7 +8,10 @@ class DocumentFieldRepository
 {
     public function list(array $request)
     {
-        return DocumentField::orderByDesc("id")->with('types')->get()->toArray();
+        $query = DocumentField::orderByDesc("id")->with('types');
+        if (!empty($request['search']))
+            $query->where('name', 'like', '%' . $request['search'] . '%');
+        return $query->get()->toArray();
     }
 
     public function store(array $request)
