@@ -55,18 +55,15 @@ class PdfToImageService extends BaseService
         $globPattern = $outputDir . '\\' . $timePrefix . '-*.png';
         $files = glob($globPattern);
 
-        // Lấy tên file tương đối để trả về
-        foreach ($files as $file) {
-            // Chỉ lấy tên file không bao gồm đường dẫn
-            $paths[] = "uploads/documents/images/" . basename($file);
-        }
+        foreach ($files as $file)
+            $paths[] = basename($file);
 
         return $paths;
     }
 
     public function imagesToPdf(array $images, string $relativeFolder, string $fileName)
     {
-        $absoluteFolder = storage_path("app/public/{$relativeFolder}");
+        $absoluteFolder = storage_path("app/public/$relativeFolder");
         if (!is_dir($absoluteFolder))
             mkdir($absoluteFolder, 0777, true);
 
