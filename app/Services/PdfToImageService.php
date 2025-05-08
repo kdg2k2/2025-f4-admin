@@ -5,6 +5,7 @@ namespace App\Services;
 use Exception;
 use Imagick;
 use ImagickPixel;
+use Log;
 
 class PdfToImageService extends BaseService
 {
@@ -15,36 +16,49 @@ class PdfToImageService extends BaseService
         if (!file_exists($fullPathToPdf))
             throw new Exception("File pdf không tồn tại");
 
+        // Chuẩn hóa đường dẫn
+        $fullPathToPdf = str_replace('/', '\\', $fullPathToPdf);
+        $outputDir = str_replace('/', '\\', $outputDir);
+
+        // Log để debug
+        Log::info("PDF Path: $fullPathToPdf");
+        Log::info("Output Directory: $outputDir");
+
         $paths = [];
+        $gsPath = config('app.ghost-script');
+        $timePrefix = date('dmYHis');
 
-        // 1) Khởi tạo instance
-        $imagick = new Imagick();
+        // Đặt tên file output với đường dẫn đầy đủ
+        $outputPattern = $outputDir . '\\' . $timePrefix . '-%03d.png';
 
-        // 2) Ping để lấy metadata, không load toàn bộ PDF vào memory
-        $imagick->pingImage($fullPathToPdf);
+        // Lệnh GhostScript 
+        $cmd = '"' . $gsPath . '" -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pngalpha -r150 ' .
+            '-dTextAlphaBits=4 -dGraphicsAlphaBits=4 ' .
+            '-o "' . $outputPattern . '" "' . $fullPathToPdf . '"';
 
-        // 3) Đếm số trang (số images)
-        $totalPages = $imagick->getNumberImages();
-        for ($i = 0; $i < $totalPages; $i++) {
-            $imagick = new Imagick();
-            // 1. set độ phân giải nếu cần
-            $imagick->setResolution(150, 150);
-            // 2. set nền trắng trước khi load PDF
-            $imagick->setBackgroundColor(new ImagickPixel('white'));
-            // 3. đọc đúng trang i (zero-based index)
-            $imagick->readImage($fullPathToPdf . "[$i]");
-            // 4. gộp layer / tắt alpha để loại transparency
-            $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_REMOVE);
-            // 5. set định dạng PNG
-            $imagick->setImageFormat('png');
-            // 6. ghi file
-            $time = date('dmYHis');
-            $name = "$time.png";
-            $imagick->writeImage("app/public/$outputDir/$name");
-            $imagick->clear();
+        // Log lệnh để debug
+        Log::info("Command: $cmd");
 
-            $paths[] = $name;
-            sleep(1);
+        // Chạy lệnh và log output
+        $output = [];
+        $returnCode = 0;
+        exec($cmd, $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            // Log lỗi chi tiết
+            $errorLog = "Command: $cmd\nReturn code: $returnCode\nOutput: " . implode("\n", $output);
+            Log::error($errorLog);
+            throw new Exception("Lỗi convert PDF: Mã lỗi $returnCode");
+        }
+
+        // Tìm các file đã tạo
+        $globPattern = $outputDir . '\\' . $timePrefix . '-*.png';
+        $files = glob($globPattern);
+
+        // Lấy tên file tương đối để trả về
+        foreach ($files as $file) {
+            // Chỉ lấy tên file không bao gồm đường dẫn
+            $paths[] = "uploads/documents/images/" . basename($file);
         }
 
         return $paths;

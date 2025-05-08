@@ -189,4 +189,5 @@ return [
     'logo-white' => env('APP_LOGO_WHITE'),
     'default-avatar' => env('DEFAULT_AVATAR'),
     'default-password' => env('DEFAULT_PASSWORD'),
+    'ghost-script'=>env('GHOST_SCRIPT'),
 ];
