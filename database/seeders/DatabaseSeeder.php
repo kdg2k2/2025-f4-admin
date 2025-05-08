@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(AdminSeeder::class);
         $this->call(PaymentSeeder::class);
+        $this->call(PackageSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
