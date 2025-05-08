@@ -89,13 +89,6 @@ class DocumentService extends BaseService
     public function download(array $request)
     {
         return $this->tryThrow(function () use ($request) {
-            $userPackage = $this->packageUserService->findNewestByUserId($request['user_id']);
-            if ($userPackage->downloads_remaining == 0)
-                throw new Exception("Bạn đã hết lượt tải miễm phí");
-
-            $userPackage->downloads_remaining = $userPackage->downloads_remaining - 1;
-            $userPackage->save();
-
             $record = $this->documentRepository->findById($request['document_id']);
             $record = $this->transformRecord($record);
             return $record['path'];
