@@ -171,14 +171,6 @@ class DocumentService extends BaseService
             "message" => "Bạn đang bị số hạn số trang được xem, hãy nâng cấp tài khoản",
         ];
 
-        $relativeFolder = "app/public/uploads/documents/temp/$id" . date("dmYHis");
-        $fileName = "temp.pdf";
-
-        if (Storage::disk('public')->exists("{$relativeFolder}/{$fileName}")) {
-            $res['path'] = Storage::disk('public')->url("{$relativeFolder}/{$fileName}");
-            return $res;
-        }
-
         $originImages = $document->images->toArray();
         $totalImages = count($originImages);
 
@@ -197,7 +189,11 @@ class DocumentService extends BaseService
         $images = array_map(fn($item) => storage_path($item['path']), $limitedImages);
 
         $relativePdfPath = $this->pdfToImageService
-            ->imagesToPdf($images, $relativeFolder, $fileName);
+            ->imagesToPdf(
+                $images,
+                "uploads/documents/temp/$id" . date("dmYHis"),
+                "temp.pdf"
+            );
 
         $res['path'] = Storage::disk('public')->url($relativePdfPath);
 
