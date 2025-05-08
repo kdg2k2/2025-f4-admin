@@ -9,6 +9,7 @@ use App\Http\Requests\Document\ListRequest;
 use App\Http\Requests\Document\ShowRequest;
 use App\Http\Requests\Document\StoreRequest;
 use App\Http\Requests\Document\UpdateRequest;
+use App\Http\Requests\Document\ViewRequest;
 use App\Services\DocumentService;
 use App\Services\DocumentTypeService;
 

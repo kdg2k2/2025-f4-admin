@@ -57,15 +57,10 @@
                 uploader: item.uploader?.name ?? '',
                 actions: `
                         <div class="text-center">
-                            <a target="_blank" href="https://view.officeapps.live.com/op/embed.aspx?src=${item.path}&embedded=true" title="Xem"
-                                class="btn btn-sm btn-outline-info rounded-pill mb-1" data-bs-toggle="tooltip"
-                                data-placement="top">
-                                <i class="fal fa-eye"></i>
-                            </a>
                             <a target="_blank" href="${item.path}" title="Tải"
                                 class="btn btn-sm btn-outline-success rounded-pill mb-1" data-bs-toggle="tooltip"
                                 data-placement="top">
-                                <i class="fal fa-download"></i>
+                                <i class="fal fa-eye"></i>
                             </a>
                             <a href="${editUrl}?id=${item.id}" title="Cập nhật"
                                 class="btn btn-sm btn-outline-warning rounded-pill mb-1" data-bs-toggle="tooltip"
