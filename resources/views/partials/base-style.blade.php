@@ -11,3 +11,4 @@
 <link href="template-admin/css/notify.css" rel="stylesheet" />
 <link href="template-admin/css/prettify.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kdg2k2/FontAwesome_6_Pro@main/css/all.min.css">
+<link rel="stylesheet" href="assets/js/nostfly-main/nostfly.css">
