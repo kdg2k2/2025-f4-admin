@@ -23,7 +23,10 @@ class DocumentTypeController extends Controller
     public function index()
     {
         return $this->catchWeb(function () {
-            return view('pages.document-Type.index');
+            $data = $this->documentTypeService->list(['paginate' => 0]);
+            return view('pages.document-Type.index', [
+                'data' => $data
+            ]);
         });
     }
 
@@ -52,13 +55,7 @@ class DocumentTypeController extends Controller
     {
         return $this->catchAPI(function () use ($request) {
             $data = $this->documentTypeService->store($request->validated());
-            return response()->json(
-                [
-                    'data' => $data,
-                    'message' => 'Thêm mới thành công!'
-                ],
-                200
-            );
+            return redirect()->route('document.type.index')->with('success', 'Thêm mới thành công!');
         });
     }
 
@@ -78,13 +75,7 @@ class DocumentTypeController extends Controller
     {
         return $this->catchAPI(function () use ($request) {
             $data = $this->documentTypeService->update($request->validated());
-            return response()->json(
-                [
-                    'data' => $data,
-                    'message' => 'Cập nhật thành công!'
-                ],
-                200
-            );
+            return redirect()->route('document.type.index')->with('success', 'Cập nhật thành công!');
         });
     }
 

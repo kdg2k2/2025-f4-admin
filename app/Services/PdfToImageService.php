@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Imagick;
 use ImagickPixel;
-use Log;
 
 class PdfToImageService extends BaseService
 {
@@ -31,7 +31,7 @@ class PdfToImageService extends BaseService
         // Đặt tên file output với đường dẫn đầy đủ
         $outputPattern = $outputDir . '\\' . $timePrefix . '-%03d.png';
 
-        // Lệnh GhostScript 
+        // Lệnh GhostScript
         $cmd = '"' . $gsPath . '" -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pngalpha -r150 ' .
             '-dTextAlphaBits=4 -dGraphicsAlphaBits=4 ' .
             '-o "' . $outputPattern . '" "' . $fullPathToPdf . '"';

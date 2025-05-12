@@ -16,6 +16,10 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->string('name');
+            $table->string('slug');
+            $table->string('bg_class');
+            $table->string('tx_class');
+            $table->string('icon_class');
         });
     }
 

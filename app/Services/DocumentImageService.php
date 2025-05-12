@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\DocumentImageRepository;
+use App\Repositories\Eloquent\DocumentImageRepository;
 
 class DocumentImageService extends BaseService
 {

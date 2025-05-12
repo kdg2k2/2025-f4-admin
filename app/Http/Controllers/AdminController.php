@@ -20,7 +20,10 @@ class AdminController extends Controller
     public function index()
     {
         return $this->catchWeb(function () {
-            return view('pages.admin.index');
+            $data = $this->adminService->list(['paginate' => 0]);
+            return view('pages.admin.index', [
+                'admins' => $data
+            ]);
         });
     }
 
@@ -44,15 +47,9 @@ class AdminController extends Controller
 
     public function store(StoreRequest $request)
     {
-        return $this->catchAPI(function () use ($request) {
+        return $this->catchWeb(function () use ($request) {
             $data = $this->adminService->store($request->validated());
-            return response()->json(
-                [
-                    'data' => $data,
-                    'message' => 'Thêm mới thành công!'
-                ],
-                200
-            );
+            return redirect()->route('admin.index')->with('success', 'Thêm mới thành công!');
         });
     }
 
@@ -68,15 +65,9 @@ class AdminController extends Controller
 
     public function update(UpdateRequest $request)
     {
-        return $this->catchAPI(function () use ($request) {
+        return $this->catchWeb(function () use ($request) {
             $data = $this->adminService->update($request->validated());
-            return response()->json(
-                [
-                    'data' => $data,
-                    'message' => 'Cập nhật thành công!'
-                ],
-                200
-            );
+            return redirect()->route('admin.index')->with('success', 'Cập nhật thành công!');
         });
     }
 

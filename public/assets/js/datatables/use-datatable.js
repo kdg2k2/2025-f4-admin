@@ -59,3 +59,38 @@ const createDataTableServerSide = (
     initializeTooltips();
     return dataTable;
 };
+
+
+const initDataTable = (
+    element,
+) => {
+    const dataTable = element.DataTable({
+        processing: true,
+        responsive: true,
+        lengthChange: true,
+        autoWidth: false,
+        ordering: false,
+        searching: true,
+        lengthMenu: [
+            [10, 50, 100],
+            [10, 50, 100],
+        ],
+        bLengthChange: true,
+        language: {
+            sLengthMenu: "Hiển thị _MENU_ bản ghi",
+            searchPlaceholder: "Nhập từ khóa...",
+            info: "Từ _START_ đến _END_ | Tổng số _TOTAL_",
+            sInfoEmpty: "Không có dữ liệu",
+            sEmptyTable: "Không có dữ liệu",
+            sSearch: "Tìm kiếm",
+            sZeroRecords: "Không tìm thấy dữ liệu phù hợp",
+            sInfoFiltered: "",
+            paginate: {
+                previous: '<i class="fal fa-angle-left"></i>',
+                next: '<i class="fal fa-angle-right"></i>',
+            },
+        },
+    });
+    initializeTooltips();
+    return dataTable;
+};

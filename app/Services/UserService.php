@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\UserRepository;
+use App\Repositories\Eloquent\UserRepository;
 use Exception;
 
 class UserService extends BaseService

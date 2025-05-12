@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Admin;
+use App\Repositories\Interfaces\AdminRepositoryInterface;
 
-class AdminRepository
+class AdminRepository implements AdminRepositoryInterface
 {
-    public function list(array $request)
+    public function list(array $request): array
     {
         $query = Admin::orderByDesc("id");
         if (!empty($request['search']))
@@ -14,20 +15,20 @@ class AdminRepository
         return $query->get()->toArray();
     }
 
-    public function store(array $request)
+    public function store(array $request): array
     {
         $record = Admin::create($request);
         return $record->toArray();
     }
 
-    public function update(array $request)
+    public function update(array $request): array
     {
         $record = Admin::find($request["id"]);
         $record->update($request);
         return $record->toArray();
     }
 
-    public function destroy(array $request)
+    public function destroy(array $request): bool
     {
         return Admin::find($request["id"])->delete();
     }
@@ -41,4 +42,4 @@ class AdminRepository
     {
         return Admin::where("email", $email)->first();
     }
-}
+} 

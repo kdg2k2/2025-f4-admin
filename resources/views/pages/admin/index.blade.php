@@ -22,6 +22,45 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover" id="datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>Ảnh đại diện</th>
+                                            <th>Họ tên</th>
+                                            <th>Email</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($admins as $admin)
+                                        <tr>
+                                            <td>
+                                                @if($admin['path'])
+                                                <div class="text-center">
+                                                    <img style="width:100px; max-height: 120px;" src="{{ $admin['path'] }}" alt="user">
+                                                </div>
+                                                @endif
+                                            </td>
+                                            <td>{{ $admin['name'] ?? '' }}</td>
+                                            <td>{{ $admin['email'] ?? '' }}</td>
+                                            <td>
+                                                <div class="text-center">
+                                                    <a href="{{ route('admin.edit', ['id' => $admin['id']]) }}" title="Cập nhật"
+                                                        class="btn btn-sm btn-outline-warning rounded-pill mb-1" data-bs-toggle="tooltip"
+                                                        data-placement="top">
+                                                        <i class="fal fa-edit"></i>
+                                                    </a>
+                                                    <a title="Xóa" data-toggle="tooltip" data-placement="top" 
+                                                        data-href="{{ route('admin.destroy', ['id' => $admin['id']]) }}" 
+                                                        data-onsuccess="main" data-bs-toggle="modal" 
+                                                        data-bs-target="#confirm-delete" 
+                                                        class="btn btn-sm btn-outline-danger rounded-pill mb-1">
+                                                        <i class="fal fa-trash-alt"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -34,57 +73,8 @@
 @section('script')
     <script>
         const datatable = $('#datatable');
-        const listUrl = @json(route('admin.list'));
-        const editUrl = @json(route('admin.edit'));
-        const destroyUrl = @json(route('admin.destroy'));
-
-        const initDataTable = () => {
-            destroyDataTable(datatable);
-
-            createDataTableServerSide(datatable, listUrl, [{
-                    data: 'path',
-                    title: 'Ảnh đại diện',
-                }, {
-                    data: 'name',
-                    title: 'Họ tên',
-                },
-                {
-                    data: 'email',
-                    title: 'Email',
-                },
-                {
-                    data: 'actions',
-                    title: 'Hành động',
-                },
-            ], (item) => ({
-                path: item.path ?
-                    `<div class="text-center"><img style="width:100px; max-height: 120px;" src="${item.path}" alt="user"></div>` :
-                    '',
-                name: item.name ?? '',
-                email: item.email ?? '',
-                actions: `
-                    <div class="text-center">
-                        <a href="${editUrl}?id=${item.id}" title="Cập nhật"
-                            class="btn btn-sm btn-outline-warning rounded-pill mb-1" data-bs-toggle="tooltip"
-                            data-placement="top">
-                            <i class="fal fa-edit"></i>
-                        </a>
-                        <a title="Xóa" data-toggle="tooltip" data-placement="top" data-href="${destroyUrl}?id=${item.id}" data-onsuccess="main" data-bs-toggle="modal" data-bs-target="#confirm-delete" class="btn btn-sm btn-outline-danger rounded-pill mb-1">
-                            <i class="fal fa-trash-alt"></i>
-                        </a>
-                    </div>
-                `
-            }), {
-                paginate: 1
-            });
-        }
-
-        window.main = () => {
-            initDataTable();
-        };
-
         $(document).ready(function() {
-            main();
+            initDataTable(datatable);
         });
     </script>
 @endsection

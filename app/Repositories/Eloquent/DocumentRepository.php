@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Document;
+use App\Repositories\Interfaces\DocumentRepositoryInterface;
 
-class DocumentRepository
+class DocumentRepository implements DocumentRepositoryInterface
 {
-    public function list(array $request)
+    public function list(array $request): array
     {
         $query = Document::orderByDesc("id")->with([
             'type.field',
@@ -28,19 +29,19 @@ class DocumentRepository
         return $records;
     }
 
-    public function store(array $request)
+    public function store(array $request): array
     {
-        return Document::create($request);
+        return Document::create($request)->toArray();
     }
 
-    public function update(array $request)
+    public function update(array $request): array
     {
         $record = Document::find($request["id"]);
         $record->update($request);
-        return $record;
+        return $record->toArray();
     }
 
-    public function destroy(array $request)
+    public function destroy(array $request): bool
     {
         return Document::find($request["id"])->delete();
     }
@@ -52,4 +53,4 @@ class DocumentRepository
             'uploader',
         ]);
     }
-}
+} 

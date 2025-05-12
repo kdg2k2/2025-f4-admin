@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\PackageUser;
-use App\Repositories\PackageUserRepository;
+use App\Repositories\Eloquent\PackageUserRepository;
 
 class PackageUserService extends BaseService
 {

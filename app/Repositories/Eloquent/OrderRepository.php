@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Order;
+use App\Repositories\Interfaces\OrderRepositoryInterface;
 
-class OrderRepository
+class OrderRepository implements OrderRepositoryInterface
 {
-    public function list(array $request)
+    public function list(array $request): array
     {
         $query = Order::orderByDesc("id")->with('payments');
 
@@ -20,20 +21,20 @@ class OrderRepository
         return $records;
     }
 
-    public function store(array $request)
+    public function store(array $request): array
     {
         $record = Order::create($request);
         return $record->toArray();
     }
 
-    public function update(array $request)
+    public function update(array $request): array
     {
         $record = Order::find($request["id"]);
         $record->update($request);
         return $record->toArray();
     }
 
-    public function destroy(array $request)
+    public function destroy(array $request): bool
     {
         return Order::find($request["id"])->delete();
     }
@@ -42,4 +43,4 @@ class OrderRepository
     {
         return Order::find($id);
     }
-}
+} 

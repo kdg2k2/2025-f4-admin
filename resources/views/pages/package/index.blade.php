@@ -22,6 +22,41 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover" id="datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên gói</th>
+                                            <th>Giới hạn tải</th>
+                                            <th>Giá tiền</th>
+                                            <th>Số ngày hiệu lực</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($packages as $package)
+                                        <tr>
+                                            <td>{{ $package['name'] ?? '' }}</td>
+                                            <td>{{ $package['download_document_limit'] ?? '' }}</td>
+                                            <td>{{ number_format($package['price'] ?? 0, 0, ',', '.') }} VNĐ</td>
+                                            <td>{{ $package['duration_days'] ?? '' }}</td>
+                                            <td>
+                                                <div class="text-center">
+                                                    <a href="{{ route('package.edit', ['id' => $package['id']]) }}" title="Cập nhật"
+                                                        class="btn btn-sm btn-outline-warning rounded-pill mb-1" data-bs-toggle="tooltip"
+                                                        data-placement="top">
+                                                        <i class="fal fa-edit"></i>
+                                                    </a>
+                                                    <a title="Xóa" data-toggle="tooltip" data-placement="top" 
+                                                        data-href="{{ route('package.destroy', ['id' => $package['id']]) }}" 
+                                                        data-onsuccess="main" data-bs-toggle="modal" 
+                                                        data-bs-target="#confirm-delete" 
+                                                        class="btn btn-sm btn-outline-danger rounded-pill mb-1">
+                                                        <i class="fal fa-trash-alt"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -33,62 +68,9 @@
 @endsection
 @section('script')
     <script>
-        const datatable = $('#datatable');
-        const listUrl = @json(route('package.list'));
-        const editUrl = @json(route('package.edit'));
-        const destroyUrl = @json(route('package.destroy'));
-
-        const initDataTable = () => {
-            destroyDataTable(datatable);
-
-            createDataTableServerSide(datatable, listUrl, [{
-                    data: 'name',
-                    title: 'Tên gói',
-                },
-                {
-                    data: 'download_document_limit',
-                    title: 'Giới hạn tải',
-                },
-                {
-                    data: 'price',
-                    title: 'Giá tiền',
-                },
-                {
-                    data: 'duration_days',
-                    title: 'Số ngày hiệu lực',
-                },
-                {
-                    data: 'actions',
-                    title: 'Hành động',
-                },
-            ], (item) => ({
-                name: item.name ?? '',
-                download_document_limit: item.download_document_limit ?? '',
-                price: item.price ?? '',
-                duration_days: item.duration_days ?? '',
-                actions: `
-                    <div class="text-center">
-                        <a href="${editUrl}?id=${item.id}" title="Cập nhật"
-                            class="btn btn-sm btn-outline-warning rounded-pill mb-1" data-bs-toggle="tooltip"
-                            data-placement="top">
-                            <i class="fal fa-edit"></i>
-                        </a>
-                        <a title="Xóa" data-toggle="tooltip" data-placement="top" data-href="${destroyUrl}?id=${item.id}" data-onsuccess="main" data-bs-toggle="modal" data-bs-target="#confirm-delete" class="btn btn-sm btn-outline-danger rounded-pill mb-1">
-                            <i class="fal fa-trash-alt"></i>
-                        </a>
-                    </div>
-                `
-            }), {
-                paginate: 1
-            });
-        }
-
-        window.main = () => {
-            initDataTable();
-        };
-
+       const datatable = $('#datatable');
         $(document).ready(function() {
-            main();
+            initDataTable(datatable)
         });
     </script>
 @endsection

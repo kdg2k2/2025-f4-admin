@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\Repositories\DocumentFieldRepository;
+use App\Repositories\Eloquent\DocumentFieldRepository;
+use Illuminate\Support\Str;
 
 class DocumentFieldService extends BaseService
 {
@@ -25,6 +26,7 @@ class DocumentFieldService extends BaseService
     public function store(array $request)
     {
         return $this->transaction(function () use ($request) {
+            $request['slug'] = Str::slug($request['name']);
             return $this->documentFieldRepository->store($request);
         });
     }
@@ -32,6 +34,7 @@ class DocumentFieldService extends BaseService
     public function update(array $request)
     {
         return $this->transaction(function () use ($request) {
+            $request['slug'] = Str::slug($request['name']);
             return $this->documentFieldRepository->update($request);
         });
     }

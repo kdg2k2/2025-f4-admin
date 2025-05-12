@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\Repositories\DocumentTypeRepository;
+use App\Repositories\Eloquent\DocumentTypeRepository;
+use Illuminate\Support\Str;
 
 class DocumentTypeService extends BaseService
 {
@@ -25,6 +26,7 @@ class DocumentTypeService extends BaseService
     public function store(array $request)
     {
         return $this->transaction(function () use ($request) {
+            $request['slug'] = Str::slug($request['name']);
             return $this->documentTypeRepository->store($request);
         });
     }
@@ -32,6 +34,7 @@ class DocumentTypeService extends BaseService
     public function update(array $request)
     {
         return $this->transaction(function () use ($request) {
+            $request['slug'] = Str::slug($request['name']);
             return $this->documentTypeRepository->update($request);
         });
     }

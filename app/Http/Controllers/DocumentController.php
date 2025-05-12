@@ -29,8 +29,14 @@ class DocumentController extends Controller
     {
         return $this->catchWeb(function () {
             $fields = $this->documentFieldService->list(['paginate' => 0]);
+            $data = $this->documentService->list([
+                'paginate' => 0,
+                'field_id' => request('field_id'),
+                'type_id' => request('type_id')
+            ]);
             return view("pages.document.index", [
                 'fields' => $fields,
+                'data' => $data
             ]);
         });
     }
@@ -57,15 +63,9 @@ class DocumentController extends Controller
 
     public function store(StoreRequest $request)
     {
-        return $this->catchAPI(function () use ($request) {
+        return $this->catchWeb(function () use ($request) {
             $data = $this->documentService->store($request->validated());
-            return response()->json(
-                [
-                    'data' => $data,
-                    'message' => 'Thêm mới thành công!'
-                ],
-                200
-            );
+            return redirect()->route('document.index')->with('success', 'Thêm mới thành công!');
         });
     }
 
@@ -83,15 +83,9 @@ class DocumentController extends Controller
 
     public function update(UpdateRequest $request)
     {
-        return $this->catchAPI(function () use ($request) {
+        return $this->catchWeb(function () use ($request) {
             $data = $this->documentService->update($request->validated());
-            return response()->json(
-                [
-                    'data' => $data,
-                    'message' => 'Cập nhật thành công!'
-                ],
-                200
-            );
+            return redirect()->route('document.index')->with('success', 'Cập nhật thành công!');
         });
     }
 

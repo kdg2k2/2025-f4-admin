@@ -17,6 +17,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->foreignId('field_id')->constrained('document_fields')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name');
+            $table->string('slug');
         });
     }
 

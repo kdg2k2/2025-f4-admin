@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\AdminRepository;
+use App\Repositories\Eloquent\AdminRepository;
 use Exception;
 
 class AdminService extends BaseService
@@ -41,7 +41,7 @@ class AdminService extends BaseService
         return $this->transaction(function () use ($request) {
             if (!empty($request["password"]))
                 $request["password"] = bcrypt($request["password"]);
-
+            else unset($request["password"]);
             if (!empty($request["path"])) {
                 $request["path"] = $this->imageUpload($request["path"]);
 

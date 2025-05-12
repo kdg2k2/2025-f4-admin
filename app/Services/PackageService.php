@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\PackageRepository;
+use App\Repositories\Eloquent\PackageRepository;
 use Exception;
 
 class PackageService extends BaseService

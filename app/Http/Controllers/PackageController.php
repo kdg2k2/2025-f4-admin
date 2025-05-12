@@ -20,7 +20,10 @@ class PackageController extends Controller
     public function index()
     {
         return $this->catchWeb(function () {
-            return view('pages.package.index');
+            $data = $this->packageService->list(['paginate' => 0]);
+            return view('pages.package.index', [
+                'packages' => $data
+            ]);
         });
     }
 
@@ -44,15 +47,9 @@ class PackageController extends Controller
 
     public function store(StoreRequest $request)
     {
-        return $this->catchAPI(function () use ($request) {
+        return $this->catchWeb(function () use ($request) {
             $data = $this->packageService->store($request->validated());
-            return response()->json(
-                [
-                    'data' => $data,
-                    'message' => 'Thêm mới thành công!'
-                ],
-                200
-            );
+            return redirect()->route('package.index')->with('success', 'Thêm mới thành công!');
         });
     }
 
@@ -68,15 +65,9 @@ class PackageController extends Controller
 
     public function update(UpdateRequest $request)
     {
-        return $this->catchAPI(function () use ($request) {
+        return $this->catchWeb(function () use ($request) {
             $data = $this->packageService->update($request->validated());
-            return response()->json(
-                [
-                    'data' => $data,
-                    'message' => 'Cập nhật thành công!'
-                ],
-                200
-            );
+            return redirect()->route('package.index')->with('success', 'Cập nhật thành công!');
         });
     }
 

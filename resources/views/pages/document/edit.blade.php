@@ -17,7 +17,9 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="post-form">
+                                <form action="{{ route('document.update', ['id' => $data['id']]) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PATCH')
                                     <div class="row">
                                         <div class="col-md-6 col-12 mb-3">
                                             <label for="title" class="form-label">
@@ -68,33 +70,5 @@
 @endsection
 
 @section('script')
-    <script>
-        const listUrl = @json(route('document.index'));
-        const updateUrl = @json(route('document.update')) + '?id=' + @json($data['id']);
-
-        $(document).ready(function() {
-            $("#post-form").on("submit", async function(e) {
-                try {
-                    e.preventDefault();
-                    const formData = new FormData(this);
-
-                    if (!formData.get("path")) formData.delete("path");
-
-                    const {
-                        message
-                    } = await http.patch(updateUrl, formData, @json(csrf_token()));
-
-                    alertSuccess(message);
-
-                    setTimeout(() => (window.location.href = listUrl), 1000);
-                } catch (error) {
-                    let {
-                        message
-                    } = error.responseJSON;
-
-                    alertErr(message);
-                }
-            });
-        });
-    </script>
+    <!-- Removed inline JavaScript code -->
 @endsection

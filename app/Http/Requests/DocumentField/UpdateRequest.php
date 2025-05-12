@@ -24,6 +24,9 @@ class UpdateRequest extends FormRequest
         return [
             'id' => 'required|integer|exists:document_fields,id',
             'name' => 'required|string|unique:document_fields,name,' . $this->id,
+            'bg_class' => 'required|string',
+            'tx_class' => 'required|string',
+            'icon_class' => 'required|string',
         ];
     }
 }

@@ -17,18 +17,54 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="post-form">
+                                <form action="{{ route('document.field.update', ['id' => $data->id]) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="_method" value="PATCH">
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-6 mb-3">
                                             <label for="name" class="form-label">
                                                 Tên lĩnh vực
                                             </label>
                                             <input required type="text" class="form-control" name="name"
                                                 value="{{ $data->name }}">
                                         </div>
+                                        <div class="col-6 mb-3">
+                                            <label for="bg_class" class="form-label">
+                                                Màu nền
+                                            </label>
+                                            <select name="bg_class" class="form-select">
+                                                @foreach ($bgs as $bg)
+                                                    <option value="{{$bg['value']}}" {{ $data->bg_class == $bg['value'] ? 'selected' : '' }}>
+                                                        <p class="{{$bg['value']}}">{{$bg['text']}}</p>
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <label for="tx_class" class="form-label">
+                                                Màu chữ
+                                            </label>
+                                            <select name="tx_class" class="form-select">
+                                                @foreach ($txs as $tx)
+                                                    <option value="{{$tx['value']}}" {{ $data->tx_class == $tx['value'] ? 'selected' : '' }}>
+                                                        <p class="{{$tx['text']}}">{{$tx['value']}}</p>
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <label for="icon_class" class="form-label">
+                                                Icon
+                                            </label>
+                                            <input type="text" class="form-control" name="icon_class"
+                                                placeholder="fa-solid fa-file" value="{{ $data->icon_class }}">
+                                        </div>
                                     </div>
+                                    <p>
+                                        <span class="text-danger fw-bold">Chú ý:</span> Các bạn có thể tham khảo các icon tại đây: <a href="https://icons.getbootstrap.com/">https://icons.getbootstrap.com/</a>, <span class="text-danger">chỉ lấy tên class thôi.</span>
+                                    </p>
                                     <div class="form-footer text-center mt-3">
-                                        <button class="btn btn-primary btn-block">Thực hiện</button>
+                                        <button type="submit" class="btn btn-primary btn-block">Thực hiện</button>
                                     </div>
                                 </form>
                             </div>
@@ -38,33 +74,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('script')
-    <script>
-        const listUrl = @json(route('document.field.index'));
-        const updateUrl = @json(route('document.field.update')) + '?id=' + @json($data->id);
-
-        $(document).ready(function() {
-            $("#post-form").on("submit", async function(e) {
-                try {
-                    e.preventDefault();
-                    const formData = new FormData(this);
-
-                    const {
-                        message
-                    } = await http.patch(updateUrl, formData, @json(csrf_token()));
-
-                    alertSuccess(message);
-
-                    setTimeout(() => (window.location.href = listUrl), 1000);
-                } catch (error) {
-                    const {
-                        message
-                    } = error.responseJSON;
-                    alertErr(message);
-                }
-            });
-        });
-    </script>
 @endsection

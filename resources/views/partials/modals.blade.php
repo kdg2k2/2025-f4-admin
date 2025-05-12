@@ -90,9 +90,11 @@
                 .then(data => {
                     modal.modal("hide");
                     alertSuccess(data.message);
-
-                    if (onSuccessFnName && typeof window[onSuccessFnName] === 'function')
-                        window[onSuccessFnName](data);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 300);
+                    // if (onSuccessFnName && typeof window[onSuccessFnName] === 'function')
+                    //     window[onSuccessFnName](data);
                 })
                 .catch(err => {
                     console.error('Delete failed', err);
@@ -112,7 +114,7 @@
         $('#btn-confirm-logout').one('click', function(evt) {
             evt.preventDefault();
 
-            apiRequest('post', $(e.relatedTarget).data('href'), {}, csrf)
+            apiRequest('post', $(e.relatedTarget).data('href'), {}, @json(csrf_token()))
                 .then(data => {
                     window.location.href = '/';
                 })

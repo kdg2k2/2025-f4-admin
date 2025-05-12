@@ -5,27 +5,48 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-body row">
-                            <div class="col-lg-3 col-md-6">
-                                <label for="field_id">
-                                    Lĩnh vực
-                                </label>
-                                <select id="field_id">
-                                    <option value="">[Chọn]</option>
-                                    @foreach ($fields as $item)
-                                        <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
-                                    @endforeach
-                                </select>
+                        <form action="{{ route('document.index') }}" method="GET">
+                            <div class="card-body row">
+                                <div class="col-lg-3 col-md-6">
+                                    <label for="field_id">
+                                        Lĩnh vực
+                                    </label>
+                                    <select id="field_id" name="field_id">
+                                        <option value="">[Chọn]</option>
+                                        @foreach ($fields as $item)
+                                            <option value="{{ $item['id'] }}" {{ request('field_id') == $item['id'] ? 'selected' : '' }}>
+                                                {{ $item['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <label for="type_id">
+                                        Loại tài liệu
+                                    </label>
+                                    <select id="type_id" name="type_id">
+                                        <option value="">[Chọn]</option>
+                                        @if(request('field_id'))
+                                            @php
+                                                $field = collect($fields)->firstWhere('id', request('field_id'));
+                                            @endphp
+                                            @if($field && isset($field['types']))
+                                                @foreach($field['types'] as $type)
+                                                    <option value="{{ $type['id'] }}" {{ request('type_id') == $type['id'] ? 'selected' : '' }}>
+                                                        {{ $type['name'] }}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        @endif
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-md-6 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fal fa-filter me-1"></i> Lọc
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-lg-3 col-md-6">
-                                <label for="type_id">
-                                    Loại tài liệu
-                                </label>
-                                <select id="type_id">
-                                    <option value="">[Chọn]</option>
-                                </select>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -41,7 +62,51 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="datatable"></table>
+                                <table class="table table-bordered table-hover" id="datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên tài liệu</th>
+                                            <th>Loại lĩnh vực</th>
+                                            <th>Loại tài liệu</th>
+                                            <th>Giá</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($data as $item)
+                                        <tr>
+                                            <td style="width: 50px;" class="text-center">{{ $loop->iteration }}</td>
+                                            <td>{{ $item['title'] }}</td>
+                                            <td>{{ $item['type']['field']['name'] ?? '' }}</td>
+                                            <td>{{ $item['type']['name'] ?? '' }}</td>
+                                            <td>{{ number_format($item['price']) }}</td>
+                                            <td style="width: 150px;" class="text-center">
+                                                <div class="text-center">
+                                                    <a target="_blank" href="{{ $item['path'] }}" title="Xem"
+                                                        class="btn btn-sm btn-outline-success rounded-pill mb-1" data-bs-toggle="tooltip"
+                                                        data-placement="top">
+                                                        <i class="fal fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ route('document.edit', ['id' => $item['id']]) }}" title="Cập nhật"
+                                                        class="btn btn-sm btn-outline-warning rounded-pill mb-1" data-bs-toggle="tooltip"
+                                                        data-placement="top">
+                                                        <i class="fal fa-edit"></i>
+                                                    </a>
+                                                    <a title="Xóa" data-toggle="tooltip" data-placement="top" 
+                                                        data-href="{{ route('document.destroy', ['id' => $item['id']]) }}" 
+                                                        data-onsuccess="main" data-bs-toggle="modal" 
+                                                        data-bs-target="#confirm-delete" 
+                                                        class="btn btn-sm btn-outline-danger rounded-pill mb-1" 
+                                                        data-bs-toggle="tooltip" data-placement="top">
+                                                        <i class="fal fa-trash-alt"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -52,89 +117,27 @@
 @endsection
 @section('script')
     <script>
-        const datatable = $('#datatable');
-        const listUrl = @json(route('document.list'));
-        const editUrl = @json(route('document.edit'));
-        const destroyUrl = @json(route('document.destroy'));
-        const fileds = @json($fields);
-
-        const renderTable = (param) => {
-            destroyDataTable(datatable);
-            const dataTable = createDataTableServerSide(datatable, listUrl, [{
-                    data: 'title',
-                    title: 'Tên tài liệu',
-                },
-                {
-                    data: 'field',
-                    title: 'Loại lĩnh vực',
-                },
-                {
-                    data: 'type',
-                    title: 'Loại tài liệu',
-                },
-                {
-                    data: 'price',
-                    title: 'Giá',
-                },
-                {
-                    data: 'actions',
-                    title: 'Hành động',
-                },
-            ], (item) => ({
-                title: item.title ?? '',
-                field: item.type?.field?.name ?? '',
-                type: item.type?.name ?? '',
-                price: formatNumber(item.price) ?? '',
-                uploader: item.uploader?.name ?? '',
-                actions: `
-                        <div class="text-center">
-                            <a target="_blank" href="${item.path}" title="Xem"
-                                class="btn btn-sm btn-outline-success rounded-pill mb-1" data-bs-toggle="tooltip"
-                                data-placement="top">
-                                <i class="fal fa-eye"></i>
-                            </a>
-                            <a href="${editUrl}?id=${item.id}" title="Cập nhật"
-                                class="btn btn-sm btn-outline-warning rounded-pill mb-1" data-bs-toggle="tooltip"
-                                data-placement="top">
-                                <i class="fal fa-edit"></i>
-                            </a>
-                            <a title="Xóa" data-toggle="tooltip" data-placement="top" data-href="${destroyUrl}?id=${item.id}" data-onsuccess="main" data-bs-toggle="modal" data-bs-target="#confirm-delete" class="btn btn-sm btn-outline-danger rounded-pill mb-1">
-                                <i class="fal fa-trash-alt"></i>
-                            </a>
-                        </div>
-                    `
-            }), param);
-        }
-
-        window.main = () => {
-            renderTable({
-                paginate: 1
-            });
-        }
+        const $datatable = $('#datatable');
+        const fields = @json($fields);
 
         $('#field_id').on('change', function() {
             const val = $(this).val();
-            renderTable({
-                paginate: 1,
-                field_id: val,
-            });
-            const filed = fileds.find((value, index) => value.id == val);
-            let options = '<option value="">[Chọn]</option>' + filed.types.map((value, index) =>
-                `<option value="${value.id}">${value.name}</option>`).join('');
+            const field = fields.find(f => f.id == val);
+            
+            // Update type select options
+            let options = '<option value="">[Chọn]</option>';
+            if (field && field.types) {
+                options += field.types.map(type => 
+                    `<option value="${type.id}">${type.name}</option>`
+                ).join('');
+            }
             $('#type_id').html(options);
             refreshSumoSelect();
-        })
-
-        $('#type_id').on('change', function() {
-            renderTable({
-                paginate: 1,
-                type_id: $(this).val(),
-            });
-        })
+        });
 
         $(document).ready(() => {
-            refreshSumoSelect()
-            main();
-        })
+            refreshSumoSelect();
+            initDataTable($datatable);
+        });
     </script>
 @endsection

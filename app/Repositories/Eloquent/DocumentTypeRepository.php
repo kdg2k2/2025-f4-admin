@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Models\DocumentType;
+use App\Repositories\Interfaces\DocumentTypeRepositoryInterface;
 
-class DocumentTypeRepository
+class DocumentTypeRepository implements DocumentTypeRepositoryInterface
 {
-    public function list(array $request)
+    public function list(array $request): array
     {
         $query = DocumentType::orderByDesc("id")->with('field');
         if (!empty($request['field_id']))
@@ -16,19 +17,19 @@ class DocumentTypeRepository
         return $query->get()->toArray();
     }
 
-    public function store(array $request)
+    public function store(array $request): array
     {
-        return DocumentType::create($request);
+        return DocumentType::create($request)->toArray();
     }
 
-    public function update(array $request)
+    public function update(array $request): array
     {
         $record = DocumentType::find($request["id"]);
         $record->update($request);
-        return $record;
+        return $record->toArray();
     }
 
-    public function destroy(array $request)
+    public function destroy(array $request): bool
     {
         return DocumentType::find($request["id"])->delete();
     }
@@ -37,4 +38,4 @@ class DocumentTypeRepository
     {
         return DocumentType::find($id);
     }
-}
+} 

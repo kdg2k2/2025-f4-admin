@@ -17,7 +17,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="post-form">
+                                <form action="{{ route('document.store') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="row">
                                         <div class="col-md-6 col-12 mb-3">
                                             <label for="title" class="form-label">
@@ -65,34 +66,5 @@
 @endsection
 
 @section('script')
-    <script>
-        const listUrl = @json(route('document.index'));
-        const storeUrl = @json(route('document.store'));
-
-        $(document).ready(function() {
-            $("#post-form").on("submit", async function(e) {
-                try {
-                    e.preventDefault();
-                    const formData = new FormData(this);
-
-                    const {
-                        message
-                    } = await http.post(storeUrl, formData, @json(csrf_token()));
-
-                    alertSuccess(message);
-
-                    this.reset();
-                    refreshSumoSelect()
-
-                    setTimeout(() => (window.location.href = listUrl), 1000);
-                } catch (error) {
-                    let {
-                        message
-                    } = error.responseJSON;
-
-                    alertErr(message);
-                }
-            });
-        });
-    </script>
+    <!-- Removed inline JavaScript code -->
 @endsection

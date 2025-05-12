@@ -21,7 +21,10 @@ class UserController extends Controller
     public function index()
     {
         return $this->catchWeb(function () {
-            return view('pages.user.index');
+            $data = $this->userService->list(['paginate' => 0]);
+            return view('pages.user.index', [
+                'users' => $data
+            ]);
         });
     }
 
@@ -45,15 +48,9 @@ class UserController extends Controller
 
     public function store(StoreRequest $request)
     {
-        return $this->catchAPI(function () use ($request) {
+        return $this->catchWeb(function () use ($request) {
             $data = $this->userService->store($request->validated());
-            return response()->json(
-                [
-                    'data' => $data,
-                    'message' => 'Thêm mới thành công!'
-                ],
-                200
-            );
+            return redirect()->route('user.index')->with('success', 'Thêm mới thành công!');
         });
     }
 
@@ -69,15 +66,9 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request)
     {
-        return $this->catchAPI(function () use ($request) {
+        return $this->catchWeb(function () use ($request) {
             $data = $this->userService->update($request->validated());
-            return response()->json(
-                [
-                    'data' => $data,
-                    'message' => 'Cập nhật thành công!'
-                ],
-                200
-            );
+            return redirect()->route('user.index')->with('success', 'Cập nhật thành công!');
         });
     }
 

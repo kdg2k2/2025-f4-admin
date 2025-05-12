@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-use App\Repositories\OrderRepository;
+use App\Repositories\Eloquent\OrderRepository;
 
 class OrderService extends BaseService{
     protected $orderRepository;

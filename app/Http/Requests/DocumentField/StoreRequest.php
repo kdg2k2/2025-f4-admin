@@ -23,6 +23,9 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|unique:document_fields,name',
+            'bg_class' => 'required|string',
+            'tx_class' => 'required|string',
+            'icon_class' => 'required|string',
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\DocumentRepository;
+use App\Repositories\Eloquent\DocumentRepository;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,9 +36,9 @@ class DocumentService extends BaseService
         return $this->transaction(function () use ($request) {
             $request = $this->prepareData($request)['request'];
             $record = $this->documentRepository->store($request);
-            $this->renderImage($record->id);
+            $this->renderImage($record['id']);
 
-            $record = $this->findById($record->id);
+            $record = $this->findById($record['id']);
             return $record;
         });
     }
@@ -58,16 +58,16 @@ class DocumentService extends BaseService
 
             if ($prepare['removeOld'] == true) {
                 $record = $this->documentRepository->findById($request['id']);
-                if (file_exists(public_path($record->path)))
-                    unlink(public_path($record->path));
+                if (file_exists(public_path($record['path'])))
+                    unlink(public_path($record['path']));
 
                 $record = $this->documentRepository->update($prepare['request']);
-                $this->renderImage($record->id);
+                $this->renderImage($record['id']);
             } else {
                 $record = $this->documentRepository->update($prepare['request']);
             }
 
-            $record = $this->findById($record->id);
+            $record = $this->findById($record['id']);
             return $record;
         });
     }
@@ -139,7 +139,7 @@ class DocumentService extends BaseService
             $document = $this->documentRepository->findById($id);
             $this->documentImageService->deleteByIdDocument($id);
 
-            $fullPathToPdf = storage_path('app/public/' . $document->path);
+            $fullPathToPdf = storage_path('app/public/' . $document['path']);
             if (!file_exists($fullPathToPdf))
                 throw new Exception("File gốc không tồn tại");
 
@@ -171,7 +171,7 @@ class DocumentService extends BaseService
             "message" => "Bạn đang bị số hạn số trang được xem, hãy nâng cấp tài khoản",
         ];
 
-        $originImages = $document->images->toArray();
+        $originImages = $document['images'];
         $totalImages = count($originImages);
 
         if ($totalImages == 0)
